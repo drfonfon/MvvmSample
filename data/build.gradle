@@ -1,0 +1,67 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+
+
+    defaultConfig {
+        minSdkVersion 24
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "api"
+
+    productFlavors {
+        origin {
+            dimension "api"
+            buildConfigField "String", "BASE_URL", "\"http://jsonplaceholder.typicode.com/\""
+        }
+    }
+
+}
+
+dependencies {
+
+    implementation(project(':core')) {
+        exclude group: 'com.google.dagger'
+    }
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    api 'com.squareup.retrofit2:retrofit:2.7.1'
+    api 'com.squareup.retrofit2:converter-gson:2.7.1'
+    api 'com.squareup.retrofit2:adapter-rxjava2:2.7.1'
+
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.17'
+
+    api "com.squareup.okhttp3:okhttp:4.4.0"
+    debugImplementation "com.squareup.okhttp3:logging-interceptor:4.4.0"
+    testImplementation "com.squareup.okhttp3:mockwebserver:4.4.0"
+
+    implementation 'com.google.dagger:dagger:2.26'
+    kapt 'com.google.dagger:dagger-compiler:2.26'
+
+    // tests
+    testImplementation 'junit:junit:4.13'
+    testImplementation "org.mockito:mockito-core:3.3.0"
+    testImplementation "org.robolectric:robolectric:4.3.1"
+    testImplementation 'io.github.benas:random-beans:3.7.0'
+    testImplementation 'org.json:json:20180130'
+}
